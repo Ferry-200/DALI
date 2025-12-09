@@ -63,9 +63,13 @@ def audio_from_url(url, name, path_output, errors=[]):
     # ydl(yt-dlp.YoutubeDL): extractor
     ydl = get_my_ydl(path_output)
 
-    ydl.params['outtmpl'] = ydl.params['outtmpl'] % {
-        'ext': ydl.params['postprocessors'][0]['preferredcodec'],
-        'title': name}
+    tmpl = ydl.params.get('outtmpl')
+    target_ext = ydl.params['postprocessors'][0].get('preferredcodec', 'mp3')
+    if isinstance(tmpl, dict):
+        base = tmpl.get('default') or tmpl.get('outtmpl') or '%(title)s.%(ext)s'
+        ydl.params['outtmpl']['default'] = base % {'ext': target_ext, 'title': name}
+    else:
+        ydl.params['outtmpl'] = tmpl % {'ext': target_ext, 'title': name}
 
     if ydl:
         print ("Downloading " + url)
