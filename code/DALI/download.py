@@ -21,7 +21,7 @@ def my_hook(d):
         print('Done downloading, now converting ...')
 
 
-def get_my_ydl(directory=os.path.dirname(os.path.abspath(__file__))):
+def get_my_ydl(directory=os.path.dirname(os.path.abspath(__file__)), cookiefile=None, cookies=None, cookiesfrombrowser=None, http_headers=None):
     ydl = None
     outtmpl = None
     if ut.check_directory(directory):
@@ -37,6 +37,14 @@ def get_my_ydl(directory=os.path.dirname(os.path.abspath(__file__))):
                     'ignoreerrors': False,
                     'external_downloader': 'ffmpeg',
                     'nocheckcertificate': True}
+        if cookiefile:
+            ydl_opts['cookiefile'] = cookiefile
+        if cookiesfrombrowser:
+            ydl_opts['cookiesfrombrowser'] = cookiesfrombrowser
+        if http_headers:
+            ydl_opts['http_headers'] = http_headers
+        elif cookies:
+            ydl_opts['http_headers'] = {'Cookie': cookies}
                     # 'external_downloader_args': "-j 8 -s 8 -x 8 -k 5M"}
                     # 'maxBuffer': 'Infinity'}
                     #  it uses multiple connections for speed up the downloading
@@ -48,7 +56,7 @@ def get_my_ydl(directory=os.path.dirname(os.path.abspath(__file__))):
     return ydl
 
 
-def audio_from_url(url, name, path_output, errors=[]):
+def audio_from_url(url, name, path_output, errors=[], cookiefile=None, cookies=None, cookiesfrombrowser=None, http_headers=None):
     """
     Download audio from a url.
         url : str
@@ -61,7 +69,7 @@ def audio_from_url(url, name, path_output, errors=[]):
     error = None
 
     # ydl(yt-dlp.YoutubeDL): extractor
-    ydl = get_my_ydl(path_output)
+    ydl = get_my_ydl(path_output, cookiefile=cookiefile, cookies=cookies, cookiesfrombrowser=cookiesfrombrowser, http_headers=http_headers)
 
     tmpl = ydl.params.get('outtmpl')
     target_ext = ydl.params['postprocessors'][0].get('preferredcodec', 'mp3')
