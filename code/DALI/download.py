@@ -1,6 +1,6 @@
 from . import utilities as ut
 import os
-import youtube_dl
+import yt_dlp
 
 base_url = 'http://www.youtube.com/watch?v='
 
@@ -41,7 +41,7 @@ def get_my_ydl(directory=os.path.dirname(os.path.abspath(__file__))):
                     # 'maxBuffer': 'Infinity'}
                     #  it uses multiple connections for speed up the downloading
                     #  'external-downloader': 'ffmpeg'}
-        ydl = youtube_dl.YoutubeDL(ydl_opts)
+        ydl = yt_dlp.YoutubeDL(ydl_opts)
         ydl.cache.remove()
         import time
         time.sleep(.5)
@@ -60,7 +60,7 @@ def audio_from_url(url, name, path_output, errors=[]):
     """
     error = None
 
-    # ydl(youtube_dl.YoutubeDL): extractor
+    # ydl(yt-dlp.YoutubeDL): extractor
     ydl = get_my_ydl(path_output)
 
     ydl.params['outtmpl'] = ydl.params['outtmpl'] % {
