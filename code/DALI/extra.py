@@ -140,10 +140,10 @@ def annot2vector_chopping(annot, dur, time_r, win_bin, hop_bin, type='voice'):
 
 
 def get_audio(dali_info, path_output, skip=[], keep=[], 
-            cookiefile: Any | None = None,
-            cookies: Any | None = None,
-            cookiesfrombrowser: Any | None = None,
-            http_headers: Any | None = None):
+            cookiefile = None,
+            cookies = None,
+            cookiesfrombrowser = None,
+            http_headers = None):
     """Get the audio for the dali dataset.
 
     It can download the whole dataset or only a subset of the dataset
